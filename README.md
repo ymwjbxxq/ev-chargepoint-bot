@@ -4,7 +4,7 @@ This project is a demo of using telegram BOT in conjunction with Lambda Function
 
 ## Requirements
 
-You must have a [PlugShare](https://developer.plugshare.com/) access key. PlugShare is a free EV driver's app for iOS, Android, and the web, allowing users to find charging stations, leave reviews, and connect with other plug-in vehicle owners. It has many charging points worldwide, with stations from every major network in North America, Europe, and throughout much of the globe. As a result, PlugShare is also home to the world's largest community of EV drivers.
+You must have a [PlugShare](https://developer.plugshare.com/) access key. PlugShare is a free EV driver's app for iOS, Android, and the web, allowing users to find charging stations, leave reviews, and connect with other plug-in vehicle owners. It has many charging points worldwide, with stations from every major network in North America, Europe, and much of the globe. As a result, PlugShare is also home to the world's largest community of EV drivers.
 
 **ATTENTION** without the access key, you cannot use PlugShare API
 
@@ -23,12 +23,12 @@ About Rust, I tried two, and they did not work for ARM64, so because I wanted to
 
 https://user-images.githubusercontent.com/78874812/164454941-bee00de4-ad1f-4b3a-a40f-5c500d207749.mov
 
-The API returns based on the location selection and empty values, so I default to Unknown.
-Tracking and Stop commands are not implemented. They are Telegram messages. In theory, I could save it into Dynamodb, the station selected and with a scheduler, ping the EV API until the status moves to AVAILABLE and send a notification to the chat.
+The API could return based on the location selection and empty values, so I default to Unknown.
+Tracking and Stop commands are not implemented. These commands are sending Telegram messages. In theory, I could save it into Dynamodb, the station selected and with a scheduler, ping the EV API until the status moves to AVAILABLE and send a notification to the chat.
 
 ## Deployment Instructions
 
-The project will deploy1. Create a new directory, navigate to that directory in a terminal and clone the GitHub repository:
+1. Create a new directory, navigate to that directory in a terminal and clone the GitHub repository:
 
     ``` 
     git clone https://github.com/ymwjbxxq/ev-chargepoint-tracker
@@ -50,8 +50,6 @@ The project will deploy1. Create a new directory, navigate to that directory in 
     * Enter a stack name
     * Enter the desired AWS Region
     * Allow SAM CLI to create IAM roles with the required permissions.
-
-    Once you have run `sam deploy -guided` mode once and saved arguments to a configuration file (samconfig.toml), you can use `sam deploy` in future to use these defaults.
 
 6. Note the outputs from the SAM deployment process. These contain the resource names and/or ARNs used for testing. 
 
