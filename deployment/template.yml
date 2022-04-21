@@ -1,0 +1,61 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+##########################################################################
+#  Parameters                                                            #
+##########################################################################
+Parameters:
+  TelegramApiKey:
+    Type: String
+  ApiKey:
+    Type: String
+
+##########################################################################
+#  Global values that are applied to all resources                       #
+##########################################################################
+Globals:
+  Function:
+    MemorySize: 1024
+    Architectures: ["arm64"]
+    Handler: bootstrap
+    Runtime: provided.al2
+    Timeout: 29
+    Environment:
+      Variables:
+        RUST_BACKTRACE: 1
+        RUST_LOG: info
+
+Resources:
+##########################################################################
+#   Lambda Functions                                                     #
+##########################################################################
+  BotLogs:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      RetentionInDays: 1
+      LogGroupName: !Sub "/aws/lambda/${AWS::StackName}-bot"
+
+  BotFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../build/bot
+      FunctionUrlConfig:
+        AuthType: NONE
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        # - DynamoDBCrudPolicy:
+        #     TableName: StationAvailability
+      Environment:
+        Variables:
+          TELEGRAM_BOT_TOKEN: !Ref TelegramApiKey
+          API_KEY: !Ref ApiKey
+    DependsOn:
+      - BotLogs
+
+Outputs:
+  BotFunctionEndpoint:
+    Description: Lambda Function URL Endpoint.
+    Value: !GetAtt BotFunctionUrl.FunctionUrl
+  BotFunctionDomain:
+    Description: Lambda Function URL domain.
+    Value: !Select [2, !Split ["/", !GetAtt BotFunctionUrl.FunctionUrl]]
